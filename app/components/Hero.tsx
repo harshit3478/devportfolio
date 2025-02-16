@@ -1,8 +1,10 @@
 "use client"
 
 import Image from "next/image"
-import { GithubIcon , Mail, ArrowDown, LinkedinIcon } from "lucide-react"
+import { GithubIcon , Mail, ArrowDown, LinkedinIcon, FileText } from "lucide-react"
 import { motion } from "framer-motion"
+import { useState } from "react"
+import Resume from "./Resume"
 
 const CodePattern = () => (
   <svg className="absolute inset-0 w-full h-full opacity-5" xmlns="http://www.w3.org/2000/svg">
@@ -22,6 +24,8 @@ const CodePattern = () => (
 )
 
 export default function Hero() {
+  const [isResumeOpen, setIsResumeOpen] = useState(false)
+
   return (
     <section
       id="hero"
@@ -52,8 +56,7 @@ export default function Hero() {
               Full Stack Software Engineer
             </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto lg:mx-0">
-              Passionate about building scalable web applications and solving complex problems. Specializing in MERN
-              stack, mobile app development, and automation testing.
+              Passionate about building scalable web applications and solving complex problems. Specializing in MERN stack, mobile app development, and automation testing.
             </p>
             <div className="flex justify-center lg:justify-start space-x-4 mb-8">
               <a
@@ -82,15 +85,26 @@ export default function Hero() {
                 <Mail className="w-6 h-6 text-gray-700 dark:text-gray-300" />
               </a>
             </div>
-            <motion.button
-              onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Learn More
-              <ArrowDown className="w-4 h-4" />
-            </motion.button>
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+              <motion.button
+                onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Learn More
+                <ArrowDown className="w-4 h-4" />
+              </motion.button>
+              <motion.button
+                onClick={() => setIsResumeOpen(true)}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 text-gray-800 dark:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                View Resume
+                <FileText className="w-4 h-4" />
+              </motion.button>
+            </div>
           </motion.div>
 
           <motion.div
@@ -107,7 +121,7 @@ export default function Hero() {
                   src="/harshit2.jpg?height=400&width=400"
                   alt="Harshit Agarwal"
                   width={400}
-                  height={200}
+                  height={400}
                   className="object-cover"
                   priority
                 />
@@ -126,6 +140,8 @@ export default function Hero() {
       >
         <div className="w-1 h-12 bg-gradient-to-b from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 rounded-full animate-pulse"></div>
       </motion.div>
+
+      <Resume isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
     </section>
   )
 }
