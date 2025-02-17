@@ -20,6 +20,8 @@ type FormData = z.infer<typeof formSchema>
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [submitError, setSubmitError] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const {
     register,
@@ -31,19 +33,35 @@ export default function Contact() {
   })
 
   const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
-      // Here you would typically send the form data to your backend
-      await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate API call
-      setSubmitSuccess(true)
-      reset()
-      setTimeout(() => setSubmitSuccess(false), 3000)
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      console.log(result);
+      if (response.ok) {
+        setSubmitSuccess(true);
+        reset();
+        setTimeout(() => setSubmitSuccess(false), 3000);
+      } else {
+        setSubmitError(true);
+        setError(result.error);
+        setTimeout(() => setSubmitError(false), 5000);
+        throw new Error('Failed to send message');
+      }
     } catch (error) {
-      console.error("Error submitting form:", error)
+      console.error('Error submitting form:', error);
+      // You might want to show an error message to the user here
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
+  
 
   return (
     <section
@@ -170,6 +188,11 @@ export default function Contact() {
               {submitSuccess && (
                 <div className="mt-4 p-4 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-md">
                   Message sent successfully!
+                </div>
+              )}
+              {submitError && (
+                <div className="mt-4 p-4 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-md">
+                  Failed to send message - {error}
                 </div>
               )}
             </form>
