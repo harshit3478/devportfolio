@@ -118,7 +118,7 @@ export default function Hero() {
               <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-blue-400 dark:from-purple-600 dark:to-blue-600 rounded-3xl transform -rotate-6 opacity-50"></div>
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/harshit2.jpg?height=400&width=400"
+                  src="/harshit2_cpy.jpg?height=400&width=400"
                   alt="Harshit Agarwal"
                   width={400}
                   height={400}
